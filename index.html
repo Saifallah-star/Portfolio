@@ -68,11 +68,19 @@
   .nav-links a:hover::after { width: 100%; }
 
   /* HAMBURGER */
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; }
   .hamburger span { width: 24px; height: 2px; background: var(--white); transition: all 0.3s; display: block; }
   .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+  .nav-close {
+    display: none;
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: none; border: none;
+    color: var(--white); font-size: 1.5rem;
+    cursor: pointer; line-height: 1;
+    padding: 0.5rem;
+  }
 
   /* HERO */
   #home {
@@ -479,15 +487,17 @@
     nav { padding: 1.2rem 1.5rem; }
     .nav-links {
       position: fixed; top: 0; right: -100%; bottom: 0;
-      width: 70%; background: rgba(0,0,0,0.97);
+      width: 70%; background: #000000;
       flex-direction: column; justify-content: center;
       padding: 3rem;
       transition: right 0.4s ease;
-      border-left: 1px solid rgba(245,168,0,0.15);
+      border-left: 1px solid rgba(245,168,0,0.3);
+      z-index: 999;
     }
     .nav-links.open { right: 0; }
     .nav-links a { font-size: 1.1rem; }
     .hamburger { display: flex; }
+    .nav-close { display: block; }
     #home { padding: 0 1.5rem; }
     section { padding: 5rem 1.5rem; }
     #about { grid-template-columns: 1fr; gap: 3rem; }
@@ -539,6 +549,7 @@
 <nav id="navbar">
   <a href="#home" class="nav-logo">Saifallah Basem</a>
   <ul class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="toggleNav()">✕</button>
     <li><a href="#home">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#education">Education</a></li>
@@ -547,9 +558,9 @@
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div class="hamburger" id="hamburger">
+  <button class="hamburger" id="hamburger" onclick="toggleNav()">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -813,25 +824,21 @@
   <div class="footer-credit">SW Tester · Ain Shams University · Cairo, Egypt</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-
-
+<script>
   // Navbar scroll
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   });
 
-  // Mobile nav
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    navLinks.classList.toggle('open');
-  });
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    hamburger.classList.remove('open');
-    navLinks.classList.remove('open');
+  // Mobile nav - global function for inline onclick
+  function toggleNav() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('navLinks').classList.remove('open');
   }));
 
   // Scroll reveal
@@ -845,7 +852,6 @@
     });
   }, { threshold: 0.05 });
   reveals.forEach(r => observer.observe(r));
-  // Fallback: show all after 2s in case observer fails
   setTimeout(() => { reveals.forEach(r => r.classList.add('visible')); }, 2000);
 
   // Contact form
@@ -864,7 +870,15 @@
   }
 
   // Active nav highlight
-  const sections = document.querySelectorAll('section');
   window.addEventListener('scroll', () => {
     let current = '';
-    sec
+    document.querySelectorAll('section').forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    document.querySelectorAll('#navLinks a').forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
+    });
+  });
+</script>
+</body>
+</html>

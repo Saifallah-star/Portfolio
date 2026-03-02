@@ -784,11 +784,11 @@
         <p>Have a project that needs solid QA? Let's talk about how I can help protect your software and deliver quality your users will trust.</p>
       </div>
       <div class="contact-links">
-        <a href="/cdn-cgi/l/email-protection#087b69616e69646469606a697b6d653a486f65696164266b6765" class="contact-link">
+        <a href="#" onclick="window.location='mai'+'lto:'+'saifallahbasem2'+'@'+'gmail.com'" class="contact-link">
           <div class="contact-link-icon">✉</div>
           <div>
             <div class="contact-link-label">Email</div>
-            <div class="contact-link-value"><span class="__cf_email__" data-cfemail="a1d2c0c8c7c0cdcdc0c9c3c0d2c4cc93e1c6ccc0c8cd8fc2cecc">[email&#160;protected]</span></div>
+            <div class="contact-link-value" id="emailDisplay">saifallahbasem2 [at] gmail.com</div>
           </div>
         </a>
         <a href="tel:01020458519" class="contact-link">
@@ -825,6 +825,9 @@
 </footer>
 
 <script>
+  // Show real email
+  document.getElementById('emailDisplay').textContent = 'saifallahbasem2' + '@' + 'gmail.com';
+
   // Navbar scroll
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {

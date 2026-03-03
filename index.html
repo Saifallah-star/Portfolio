@@ -538,6 +538,81 @@
     color: var(--black); padding: 0 2rem;
   }
   @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* ===== SPOTLIGHT EASTER EGG ===== */
+  .spotlight-zone {
+    position: absolute;
+    top: 0; right: 0;
+    width: 35%; height: 100%;
+    z-index: 2;
+    overflow: hidden;
+  }
+  /* The hidden layer — always present but invisible */
+  .spotlight-hidden {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    /* Clip to nothing by default — revealed only where mask allows */
+    -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%);
+    mask-image: radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%);
+    transition: -webkit-mask-image 0.05s, mask-image 0.05s;
+  }
+  .spotlight-content {
+    padding: 2rem;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    text-align: center;
+  }
+  .bug-svg {
+    width: min(180px, 70%);
+    height: auto;
+    filter: drop-shadow(0 0 24px rgba(245,168,0,0.5)) drop-shadow(0 0 60px rgba(245,168,0,0.2));
+    animation: bugFloat 3s ease-in-out infinite;
+  }
+  @keyframes bugFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%       { transform: translateY(-12px) rotate(2deg); }
+  }
+  .sp-tag {
+    font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    animation: spFlicker 3s ease infinite;
+  }
+  @keyframes spFlicker {
+    0%,96%,100% { opacity:1; }
+    97% { opacity:0.3; }
+    98% { opacity:1; }
+    99% { opacity:0.2; }
+  }
+  .sp-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 4vw, 56px);
+    color: var(--white); line-height: 1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 20px rgba(245,168,0,0.4);
+  }
+  .sp-lines {
+    display: flex; flex-direction: column; gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .sp-line { font-size: 0.78rem; color: #aaa; }
+  .sp-red    { color: #ff5f57; margin-right: 0.5rem; }
+  .sp-yellow { color: #ffbd2e; margin-right: 0.5rem; }
+  .sp-green  { color: #28ca41; margin-right: 0.5rem; }
+  .sp-bottom {
+    font-size: 0.68rem; color: #444;
+    letter-spacing: 1px; margin-top: 1rem;
+  }
+  /* Invisible overlay to catch mouse events */
+  .spotlight-mask {
+    position: absolute; inset: 0;
+    cursor: crosshair;
+  }
+  @media (max-width: 768px) {
+    .spotlight-zone { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -580,6 +655,55 @@
   <div class="scroll-indicator">
     <div class="scroll-line"></div>
     Scroll to explore
+  </div>
+
+  <!-- SPOTLIGHT EASTER EGG -->
+  <div class="spotlight-zone" id="spotlightZone">
+    <div class="spotlight-hidden" id="spotlightHidden">
+      <div class="spotlight-content">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="bug-svg">
+          <!-- Body -->
+          <ellipse cx="100" cy="115" rx="38" ry="52" fill="#F5A800"/>
+          <!-- Head -->
+          <ellipse cx="100" cy="63" rx="28" ry="26" fill="#F5A800"/>
+          <!-- Eyes -->
+          <circle cx="89" cy="57" r="7" fill="#000"/>
+          <circle cx="111" cy="57" r="7" fill="#000"/>
+          <circle cx="91" cy="55" r="2.5" fill="#fff"/>
+          <circle cx="113" cy="55" r="2.5" fill="#fff"/>
+          <!-- Antennae -->
+          <line x1="90" y1="38" x2="72" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <line x1="110" y1="38" x2="128" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="72" cy="13" r="4" fill="#F5A800"/>
+          <circle cx="128" cy="13" r="4" fill="#F5A800"/>
+          <!-- Body segments -->
+          <line x1="64" y1="105" x2="136" y2="105" stroke="#cc8800" stroke-width="2" opacity="0.6"/>
+          <line x1="62" y1="120" x2="138" y2="120" stroke="#cc8800" stroke-width="2" opacity="0.6"/>
+          <line x1="65" y1="135" x2="135" y2="135" stroke="#cc8800" stroke-width="2" opacity="0.6"/>
+          <!-- Spots -->
+          <circle cx="85" cy="112" r="6" fill="#cc8800" opacity="0.7"/>
+          <circle cx="115" cy="112" r="6" fill="#cc8800" opacity="0.7"/>
+          <circle cx="82" cy="130" r="5" fill="#cc8800" opacity="0.7"/>
+          <circle cx="118" cy="130" r="5" fill="#cc8800" opacity="0.7"/>
+          <circle cx="100" cy="95" r="5" fill="#cc8800" opacity="0.7"/>
+          <!-- Legs left -->
+          <line x1="64" y1="100" x2="30" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <line x1="63" y1="115" x2="26" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <line x1="65" y1="130" x2="30" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <!-- Legs right -->
+          <line x1="136" y1="100" x2="170" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <line x1="137" y1="115" x2="174" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <line x1="135" y1="130" x2="170" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round"/>
+          <!-- Mouth smile -->
+          <path d="M 91 70 Q 100 78 109 70" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Wing shimmer -->
+          <ellipse cx="78" cy="108" rx="16" ry="36" fill="rgba(255,200,50,0.12)" transform="rotate(-10,78,108)"/>
+          <ellipse cx="122" cy="108" rx="16" ry="36" fill="rgba(255,200,50,0.12)" transform="rotate(10,122,108)"/>
+        </svg>
+        <div class="sp-bottom">🔦 You found the bug!</div>
+      </div>
+    </div>
+    <div class="spotlight-mask" id="spotlightMask"></div>
   </div>
 </section>
 
@@ -831,6 +955,25 @@
 
   // EmailJS init
   emailjs.init('9bUeWzRMy6z7zcwt0');
+
+  // Spotlight easter egg
+  const spotlightZone = document.getElementById('spotlightZone');
+  const spotlightHidden = document.getElementById('spotlightHidden');
+  const spotlightMask = document.getElementById('spotlightMask');
+  if (spotlightZone) {
+    spotlightMask.addEventListener('mousemove', (e) => {
+      const rect = spotlightZone.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const radius = 130;
+      spotlightHidden.style.webkitMaskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
+      spotlightHidden.style.maskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
+    });
+    spotlightMask.addEventListener('mouseleave', () => {
+      spotlightHidden.style.webkitMaskImage = `radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%)`;
+      spotlightHidden.style.maskImage = `radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%)`;
+    });
+  }
 
   // Navbar scroll
   const navbar = document.getElementById('navbar');

@@ -37,8 +37,6 @@
       overflow-x: hidden;
     }
 
-
-
     /* NAV */
     nav {
       position: fixed;
@@ -102,6 +100,14 @@
     }
 
     .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--gold);
+    }
+
+    .nav-links a.active::after {
       width: 100%;
     }
 
@@ -401,16 +407,22 @@
       margin-top: 2.5rem;
     }
 
+    /* ===== INTERACTIVE STAT CARDS ===== */
     .stat {
       padding: 1.5rem;
       border: 1px solid rgba(245, 168, 0, 0.15);
       position: relative;
-      transition: border-color 0.3s, transform 0.3s;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
     }
 
     .stat:hover {
       border-color: var(--gold);
       transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(245, 168, 0, 0.12);
     }
 
     .stat::before {
@@ -433,6 +445,11 @@
       font-size: 3rem;
       color: var(--gold);
       line-height: 1;
+      transition: transform 0.3s;
+    }
+
+    .stat:hover .stat-num {
+      transform: scale(1.08);
     }
 
     .stat-label {
@@ -441,6 +458,67 @@
       color: #666;
       text-transform: uppercase;
       margin-top: 0.3rem;
+      transition: color 0.3s;
+    }
+
+    .stat:hover .stat-label {
+      color: #aaa;
+    }
+
+    /* Arrow hint on stat hover */
+    .stat-arrow {
+      position: absolute;
+      bottom: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.75rem;
+      color: transparent;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .stat:hover .stat-arrow {
+      color: var(--gold);
+      transform: translate(2px, -2px);
+    }
+
+    /* Surprise stat — no link, special hover */
+    .stat-surprise {
+      cursor: default;
+    }
+
+    .stat-surprise:hover {
+      box-shadow: 0 12px 32px rgba(245, 168, 0, 0.08);
+    }
+
+    .stat-surprise .stat-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.4rem 0.75rem;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .stat-surprise .stat-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--gold);
+    }
+
+    .stat-surprise:hover .stat-tooltip {
+      display: block;
     }
 
     .about-visual {
@@ -670,9 +748,6 @@
       overflow: hidden;
       position: relative;
       transition: all 0.3s;
-      display: block;
-      text-decoration: none;
-      color: inherit;
     }
 
     .project-card:hover {
@@ -1031,6 +1106,52 @@
       overflow: hidden;
     }
 
+    /* ---- BUG OUTLINE HINT ---- */
+    .bug-hint-svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(180px, 70%);
+      height: auto;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 1;
+      /* Slow fade out when spotlight is active */
+      transition: opacity 0.6s ease;
+    }
+
+    .bug-hint-svg .hint-path {
+      fill: none;
+      stroke: rgba(245, 168, 0, 0.18);
+      stroke-width: 1px;
+      stroke-dasharray: 4 5;
+      animation: hintPulse 4s ease-in-out infinite;
+    }
+
+    .bug-hint-svg .hint-path-solid {
+      fill: none;
+      stroke: rgba(245, 168, 0, 0.06);
+      stroke-width: 0.5px;
+    }
+
+    @keyframes hintPulse {
+
+      0%,
+      100% {
+        stroke-opacity: 0.18;
+      }
+
+      50% {
+        stroke-opacity: 0.32;
+      }
+    }
+
+    /* Hide hint when user is hovering the spotlight */
+    .spotlight-zone:hover .bug-hint-svg {
+      opacity: 0;
+    }
+
     /* The hidden layer — always present but invisible */
     .spotlight-hidden {
       position: absolute;
@@ -1039,7 +1160,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Clip to nothing by default — revealed only where mask allows */
       -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%);
       mask-image: radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%);
       transition: -webkit-mask-image 0.05s, mask-image 0.05s;
@@ -1114,33 +1234,6 @@
       text-shadow: 0 0 20px rgba(245, 168, 0, 0.4);
     }
 
-    .sp-lines {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .sp-line {
-      font-size: 0.78rem;
-      color: #aaa;
-    }
-
-    .sp-red {
-      color: #ff5f57;
-      margin-right: 0.5rem;
-    }
-
-    .sp-yellow {
-      color: #ffbd2e;
-      margin-right: 0.5rem;
-    }
-
-    .sp-green {
-      color: #28ca41;
-      margin-right: 0.5rem;
-    }
-
     .sp-bottom {
       font-size: 0.68rem;
       color: #444;
@@ -1153,6 +1246,7 @@
       position: absolute;
       inset: 0;
       cursor: crosshair;
+      z-index: 3;
     }
 
     @media (max-width: 768px) {
@@ -1164,8 +1258,6 @@
 </head>
 
 <body>
-
-
 
   <div class="toast" id="toast">Message Sent!</div>
 
@@ -1217,44 +1309,59 @@
 
     <!-- SPOTLIGHT EASTER EGG -->
     <div class="spotlight-zone" id="spotlightZone">
+
+      <!-- BUG OUTLINE HINT — faint dashed silhouette visible before hovering -->
+      <svg class="bug-hint-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body outline -->
+        <ellipse cx="100" cy="115" rx="38" ry="52" class="hint-path" />
+        <!-- Head outline -->
+        <ellipse cx="100" cy="63" rx="28" ry="26" class="hint-path" />
+        <!-- Eye hints -->
+        <circle cx="89" cy="57" r="7" class="hint-path-solid" />
+        <circle cx="111" cy="57" r="7" class="hint-path-solid" />
+        <!-- Antennae -->
+        <line x1="90" y1="38" x2="72" y2="14" class="hint-path" stroke-dasharray="3 4" />
+        <line x1="110" y1="38" x2="128" y2="14" class="hint-path" stroke-dasharray="3 4" />
+        <circle cx="72" cy="13" r="4" class="hint-path" />
+        <circle cx="128" cy="13" r="4" class="hint-path" />
+        <!-- Legs left -->
+        <line x1="64" y1="100" x2="30" y2="88" class="hint-path" stroke-dasharray="3 4" />
+        <line x1="63" y1="115" x2="26" y2="112" class="hint-path" stroke-dasharray="3 4" />
+        <line x1="65" y1="130" x2="30" y2="138" class="hint-path" stroke-dasharray="3 4" />
+        <!-- Legs right -->
+        <line x1="136" y1="100" x2="170" y2="88" class="hint-path" stroke-dasharray="3 4" />
+        <line x1="137" y1="115" x2="174" y2="112" class="hint-path" stroke-dasharray="3 4" />
+        <line x1="135" y1="130" x2="170" y2="138" class="hint-path" stroke-dasharray="3 4" />
+      </svg>
+
       <div class="spotlight-hidden" id="spotlightHidden">
         <div class="spotlight-content">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="bug-svg">
-            <!-- Body -->
             <ellipse cx="100" cy="115" rx="38" ry="52" fill="#F5A800" />
-            <!-- Head -->
             <ellipse cx="100" cy="63" rx="28" ry="26" fill="#F5A800" />
-            <!-- Eyes -->
             <circle cx="89" cy="57" r="7" fill="#000" />
             <circle cx="111" cy="57" r="7" fill="#000" />
             <circle cx="91" cy="55" r="2.5" fill="#fff" />
             <circle cx="113" cy="55" r="2.5" fill="#fff" />
-            <!-- Antennae -->
             <line x1="90" y1="38" x2="72" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
             <line x1="110" y1="38" x2="128" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
             <circle cx="72" cy="13" r="4" fill="#F5A800" />
             <circle cx="128" cy="13" r="4" fill="#F5A800" />
-            <!-- Body segments -->
             <line x1="64" y1="105" x2="136" y2="105" stroke="#cc8800" stroke-width="2" opacity="0.6" />
             <line x1="62" y1="120" x2="138" y2="120" stroke="#cc8800" stroke-width="2" opacity="0.6" />
             <line x1="65" y1="135" x2="135" y2="135" stroke="#cc8800" stroke-width="2" opacity="0.6" />
-            <!-- Spots -->
             <circle cx="85" cy="112" r="6" fill="#cc8800" opacity="0.7" />
             <circle cx="115" cy="112" r="6" fill="#cc8800" opacity="0.7" />
             <circle cx="82" cy="130" r="5" fill="#cc8800" opacity="0.7" />
             <circle cx="118" cy="130" r="5" fill="#cc8800" opacity="0.7" />
             <circle cx="100" cy="95" r="5" fill="#cc8800" opacity="0.7" />
-            <!-- Legs left -->
             <line x1="64" y1="100" x2="30" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
             <line x1="63" y1="115" x2="26" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
             <line x1="65" y1="130" x2="30" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-            <!-- Legs right -->
             <line x1="136" y1="100" x2="170" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
             <line x1="137" y1="115" x2="174" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
             <line x1="135" y1="130" x2="170" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-            <!-- Mouth smile -->
             <path d="M 91 70 Q 100 78 109 70" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round" />
-            <!-- Wing shimmer -->
             <ellipse cx="78" cy="108" rx="16" ry="36" fill="rgba(255,200,50,0.12)" transform="rotate(-10,78,108)" />
             <ellipse cx="122" cy="108" rx="16" ry="36" fill="rgba(255,200,50,0.12)" transform="rotate(10,122,108)" />
           </svg>
@@ -1295,22 +1402,35 @@
       <p>Great testing is about <strong>communication as much as execution</strong>. I translate technical issues into
         clear, actionable insights so stakeholders can make confident decisions.</p>
       <div class="about-stats">
-        <div class="stat">
+
+        <!-- Projects Completed → #projects -->
+        <a href="#projects" class="stat" title="See my projects">
           <div class="stat-num">3+</div>
           <div class="stat-label">Projects Completed</div>
-        </div>
-        <div class="stat">
+          <div class="stat-arrow">↗</div>
+        </a>
+
+        <!-- Testing Skills → #skills -->
+        <a href="#skills" class="stat" title="See all skills">
           <div class="stat-num">13</div>
           <div class="stat-label">Testing Skills</div>
-        </div>
-        <div class="stat">
+          <div class="stat-arrow">↗</div>
+        </a>
+
+        <!-- Services Offered → #services -->
+        <a href="#services" class="stat" title="See all services">
           <div class="stat-num">5</div>
           <div class="stat-label">Services Offered</div>
-        </div>
-        <div class="stat">
+          <div class="stat-arrow">↗</div>
+        </a>
+
+        <!-- Production Surprises — easter egg tooltip -->
+        <div class="stat stat-surprise">
           <div class="stat-num">0</div>
           <div class="stat-label">Production Surprises</div>
+          <div class="stat-tooltip">That's the whole point 😉</div>
         </div>
+
       </div>
     </div>
     <div class="about-visual reveal">
@@ -1418,8 +1538,6 @@
       <h2 class="section-title">PROJECTS</h2>
     </div>
     <div class="projects-grid reveal">
-
-      <!-- Project 1: Traffic Light (no link) -->
       <div class="project-card">
         <div class="project-header">
           <div class="project-year">2024</div>
@@ -1434,31 +1552,29 @@
           </ul>
         </div>
       </div>
-
-      <!-- Project 2: Vehicle Rental (links to GitHub) -->
-      <a class="project-card" href="https://github.com/Saifallah-star/java-project" target="_blank"
-        rel="noopener noreferrer">
-        <div class="project-header">
-          <div class="project-year">2025</div>
-          <div class="project-arrow">↗</div>
-        </div>
-        <div class="project-body">
-          <div class="project-title">Vehicle Rental System</div>
-          <ul class="project-features">
-            <li>Designed and implemented a vehicle rental management application</li>
-            <li>Vehicle availability tracking, user bookings, and rental management</li>
-            <li>Enhanced skills in system design and software structure</li>
-          </ul>
-        </div>
-      </a>
-
-      <!-- Project 3: Food Rescue (no link) -->
       <div class="project-card">
         <div class="project-header">
           <div class="project-year">2025</div>
           <div class="project-arrow">↗</div>
         </div>
         <div class="project-body">
+
+          <!-- Project 2: Vehicle Rental (links to GitHub) -->
+          <a class="project-card" href="https://github.com/Saifallah-star/java-project" target="_blank"
+            rel="noopener noreferrer">
+            <div class="project-header">
+              <div class="project-year">2025</div>
+              <div class="project-arrow">↗</div>
+            </div>
+            <div class="project-body">
+              <div class="project-title">Vehicle Rental System</div>
+              <ul class="project-features">
+                <li>Designed and implemented a vehicle rental management application</li>
+                <li>Vehicle availability tracking, user bookings, and rental management</li>
+                <li>Enhanced skills in system design and software structure</li>
+              </ul>
+            </div>
+          </a>
           <div class="project-title">Food Rescue Platform</div>
           <ul class="project-features">
             <li>Platform connecting food donors with charities to reduce waste</li>
@@ -1467,7 +1583,6 @@
           </ul>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -1556,7 +1671,7 @@
       navbar.classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // Mobile nav - global function for inline onclick
+    // Mobile nav
     function toggleNav() {
       document.getElementById('hamburger').classList.toggle('open');
       document.getElementById('navLinks').classList.toggle('open');
@@ -1578,6 +1693,19 @@
     }, { threshold: 0.05 });
     reveals.forEach(r => observer.observe(r));
     setTimeout(() => { reveals.forEach(r => r.classList.add('visible')); }, 2000);
+
+    // Active nav highlight
+    window.addEventListener('scroll', () => {
+      let current = '';
+      document.querySelectorAll('section').forEach(s => {
+        if (window.scrollY >= s.offsetTop - 100) current = s.id;
+      });
+      document.querySelectorAll('#navLinks a').forEach(a => {
+        const isActive = a.getAttribute('href') === '#' + current;
+        a.classList.toggle('active', isActive);
+        a.style.color = '';
+      });
+    });
 
     // Contact form with EmailJS
     function sendMessage() {
@@ -1604,23 +1732,12 @@
         document.getElementById('formMessage').value = '';
         btn.textContent = 'Send Message →';
         btn.disabled = false;
-      }).catch((err) => {
+      }).catch(() => {
         alert('Failed to send. Please try again or email directly.');
         btn.textContent = 'Send Message →';
         btn.disabled = false;
       });
     }
-
-    // Active nav highlight
-    window.addEventListener('scroll', () => {
-      let current = '';
-      document.querySelectorAll('section').forEach(s => {
-        if (window.scrollY >= s.offsetTop - 100) current = s.id;
-      });
-      document.querySelectorAll('#navLinks a').forEach(a => {
-        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
-      });
-    });
   </script>
 </body>
 

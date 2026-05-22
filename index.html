@@ -5,2171 +5,390 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Saifallah Basem — SW Tester</title>
+  
+  <!-- Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dancing+Script:wght@700&family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet">
+  
+  <!-- Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <style>
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --gold: #F5A800;
-      --gold-glow: rgba(245, 168, 0, 0.4);
-      --black: #000000;
-      --white: #FFFFFF;
-      --gray: #111111;
-      --gray-light: #161616;
-      --text-muted: #888888;
-      --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.4rem 3rem;
-      z-index: 1000;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
-      backdrop-filter: blur(0px);
-      -webkit-backdrop-filter: blur(0px);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    nav.scrolled {
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.3rem;
-      letter-spacing: 2px;
-      color: var(--gold);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--white);
-      text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 400;
-      position: relative;
-      transition: color 0.2s;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--gold);
-      transition: width 0.3s;
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-links a.active {
-      color: var(--gold);
-    }
-
-    .nav-links a.active::after {
-      width: 100%;
-    }
-
-    /* HAMBURGER */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 10px;
-      border-radius: 50%;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .hamburger:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--gold);
-    }
-
-    .hamburger span {
-      width: 20px;
-      height: 2px;
-      background: var(--white);
-      transition: all 0.3s;
-      display: block;
-    }
-
-    .hamburger.open span:nth-child(1) {
-      transform: rotate(45deg) translate(4px, 4px);
-    }
-
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger.open span:nth-child(3) {
-      transform: rotate(-45deg) translate(4px, -4px);
-    }
-
-    .nav-close {
-      display: none;
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--white);
-      font-size: 1.2rem;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0.6rem;
-      border-radius: 50%;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .nav-close:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: var(--gold);
-      transform: rotate(90deg);
-    }
-
-    /* HERO */
-    #home {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 0 3rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-bg-text {
-      position: absolute;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(100px, 18vw, 280px);
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
-      line-height: 1;
-      user-select: none;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      z-index: 0;
-      animation: bgTextSlide 20s linear infinite;
-    }
-
-    @keyframes bgTextSlide {
-      0% {
-        transform: translate(-50%, -50%) skewX(0deg);
-      }
-
-      25% {
-        transform: translate(-50%, -52%) skewX(-1deg);
-      }
-
-      75% {
-        transform: translate(-50%, -48%) skewX(1deg);
-      }
-
-      100% {
-        transform: translate(-50%, -50%) skewX(0deg);
-      }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-tag {
-      font-size: 0.75rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
-    }
-
-    .hero-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(60px, 10vw, 140px);
-      line-height: 0.9;
-      letter-spacing: 2px;
-      color: var(--white);
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
-    }
-
-    .hero-role {
-      font-family: 'Dancing Script', cursive;
-      font-size: clamp(32px, 5vw, 70px);
-      color: var(--gold);
-      margin-top: 0.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.6s forwards;
-    }
-
-    .hero-desc {
-      max-width: 520px;
-      font-size: 1.05rem;
-      line-height: 1.8;
-      color: #c4c4c4;
-      margin-top: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 1s forwards;
-    }
-
-    .btn {
-      padding: 0.9rem 2.4rem;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-decoration: none;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      border-radius: 50px;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-    }
-
-    .btn:active {
-      transform: scale(0.95) translateY(0) !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-
-    .btn-primary {
-      background: rgba(245, 168, 0, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: var(--black);
-      border: 1px solid rgba(245, 168, 0, 0.4);
-      box-shadow: 0 4px 15px rgba(245, 168, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.15);
-      z-index: -1;
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-primary:hover {
-      color: var(--black);
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 10px 30px rgba(245, 168, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
-      background: rgba(245, 168, 0, 1);
-    }
-
-    .btn-primary:hover::before {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: var(--white);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-outline:hover {
-      border-color: rgba(245, 168, 0, 0.6);
-      background: rgba(245, 168, 0, 0.1);
-      color: var(--gold);
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 10px 25px rgba(245, 168, 0, 0.15), inset 0 1px 1px rgba(245, 168, 0, 0.1);
-    }
-
-    .btn-icon {
-      width: 46px;
-      height: 46px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #aaa;
-      text-decoration: none;
-      border-radius: 50%;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      flex-shrink: 0;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn-icon:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-      background: rgba(245, 168, 0, 0.1);
-      transform: translateY(-4px) scale(1.08);
-      box-shadow: 0 8px 25px rgba(245, 168, 0, 0.25);
-    }
-
-    .btn-icon:active {
-      transform: scale(0.92) translateY(0) !important;
-    }
-
-    .hero-cta {
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2rem;
-      left: 3rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.7rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #555;
-      opacity: 0;
-      animation: fadeUp 0.8s 1.4s forwards;
-    }
-
-    .scroll-line {
-      width: 40px;
-      height: 1px;
-      background: #555;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .scroll-line::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: var(--gold);
-      animation: lineMove 2s ease infinite;
-    }
-
-    @keyframes lineMove {
-      0% {
-        left: -100%;
-      }
-
-      100% {
-        left: 100%;
-      }
-    }
-
-    /* SECTIONS */
-    section {
-      padding: 7rem 3rem;
-    }
-
-    .section-label {
-      font-size: 0.7rem;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 7vw, 90px);
-      line-height: 1;
-      color: var(--white);
-      margin-bottom: 3rem;
-    }
-
-    /* ABOUT */
-    #about {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .about-text p {
-      font-size: 1.05rem;
-      line-height: 1.9;
-      color: #c4c4c4;
-      margin-bottom: 1.4rem;
-    }
-
-    .about-text p strong {
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-
-    /* ===== INTERACTIVE STAT CARDS ===== */
-    .stat {
-      padding: 1.5rem;
-      background: rgba(22, 22, 22, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(245, 168, 0, 0.15);
-      border-radius: 16px;
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
-      color: inherit;
-      overflow: hidden;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    .stat:hover {
-      border-color: var(--gold);
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 15px 35px rgba(245, 168, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-      background: linear-gradient(145deg, rgba(22, 22, 22, 0.6) 0%, rgba(245, 168, 0, 0.05) 100%);
-    }
-
-    .stat::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--gold);
-      transform: scaleY(0);
-      transform-origin: bottom;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      border-top-left-radius: 16px;
-      border-bottom-left-radius: 16px;
-    }
-
-    .stat:hover::before {
-      transform: scaleY(1);
-    }
-
-    .stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3rem;
-      color: var(--gold);
-      line-height: 1;
-      transition: transform 0.3s;
-    }
-
-    .stat:hover .stat-num {
-      transform: scale(1.08);
-    }
-
-    .stat-label {
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      color: #666;
-      text-transform: uppercase;
-      margin-top: 0.3rem;
-      transition: color 0.3s;
-    }
-
-    .stat:hover .stat-label {
-      color: #aaa;
-    }
-
-    /* Arrow hint on stat hover */
-    .stat-arrow {
-      position: absolute;
-      bottom: 0.75rem;
-      right: 0.75rem;
-      font-size: 0.75rem;
-      color: transparent;
-      transition: color 0.3s, transform 0.3s;
-    }
-
-    .stat:hover .stat-arrow {
-      color: var(--gold);
-      transform: translate(2px, -2px);
-    }
-
-    /* Surprise stat — no link, special hover */
-    .stat-surprise {
-      cursor: default;
-    }
-
-    .stat-surprise:hover {
-      box-shadow: 0 12px 32px rgba(245, 168, 0, 0.08);
-    }
-
-    .stat-surprise .stat-tooltip {
-      display: none;
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold);
-      color: var(--black);
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 0.4rem 0.75rem;
-      white-space: nowrap;
-      pointer-events: none;
-      z-index: 10;
-      border-radius: 20px;
-    }
-
-    .stat-surprise .stat-tooltip::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 5px solid transparent;
-      border-top-color: var(--gold);
-    }
-
-    .stat-surprise:hover .stat-tooltip {
-      display: block;
-    }
-
-    .about-visual {
-      position: relative;
-      display: flex;
-      justify-content: center;
-    }
-
-    .about-card {
-      width: 100%;
-      max-width: 360px;
-      background: rgba(17, 17, 17, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(245, 168, 0, 0.15);
-      border-radius: 20px;
-      padding: 2.5rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .about-card:hover {
-      border-color: rgba(245, 168, 0, 0.35);
-      transform: translateY(-4px);
-      box-shadow: 0 15px 45px rgba(245, 168, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.08);
-    }
-
-    .about-card::before {
-      content: 'QA';
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 120px;
-      color: rgba(245, 168, 0, 0.05);
-      position: absolute;
-      bottom: -20px;
-      right: -10px;
-      line-height: 1;
-    }
-
-    .about-card-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      color: var(--gold);
-      letter-spacing: 2px;
-      margin-bottom: 1.5rem;
-    }
-
-    .about-card ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .about-card li {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.9rem;
-      color: #ccc;
-    }
-
-    .about-card li::before {
-      content: '→';
-      color: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* EDUCATION */
-    #education {
-      background: var(--gray);
-    }
-
-    .edu-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-
-    .edu-card {
-      padding: 2.5rem;
-      background: rgba(22, 22, 22, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 20px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    .edu-card:hover {
-      transform: translateY(-8px) scale(1.01);
-      border-color: rgba(245, 168, 0, 0.4);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(245, 168, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    }
-
-    .edu-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gold);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .edu-card:hover::after {
-      transform: scaleX(1);
-    }
-
-    .edu-year {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .edu-institution {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--white);
-      margin: 0.5rem 0 0.25rem;
-    }
-
-    .edu-degree {
-      font-size: 0.9rem;
-      color: #777;
-    }
-
-    /* SKILLS */
-    #skills {}
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
-    }
-
-    .skill-tag {
-      padding: 1rem 1.4rem;
-      background: rgba(22, 22, 22, 0.4);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.85rem;
-      color: #ccc;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
-      border-radius: 30px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .skill-tag::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: var(--gold);
-      transform: scaleY(0);
-      transition: transform 0.3s ease;
-      transform-origin: bottom;
-      border-top-left-radius: 30px;
-      border-bottom-left-radius: 30px;
-    }
-
-    .skill-tag:hover::before {
-      transform: scaleY(1);
-    }
-
-    .skill-tag:hover {
-      background: rgba(245, 168, 0, 0.08);
-      border-color: rgba(245, 168, 0, 0.4);
-      color: var(--white);
-      transform: translateX(6px) scale(1.02);
-      box-shadow: 0 6px 20px rgba(245, 168, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    }
-
-    .skill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* SERVICES */
-    #services {
-      background: var(--gray);
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .service-card {
-      padding: 2.5rem;
-      background: rgba(22, 22, 22, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 20px;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    .service-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at top right, rgba(245, 168, 0, 0.08), transparent 60%);
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: -1;
-    }
-
-    .service-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 45px rgba(245, 168, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    }
-
-    .service-card:hover::after {
-      opacity: 1;
-    }
-
-    .service-icon {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      display: block;
-      line-height: 1;
-    }
-
-    .service-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      letter-spacing: 1px;
-      color: var(--gold);
-      margin-bottom: 0.75rem;
-    }
-
-    .service-desc {
-      font-size: 0.95rem;
-      color: #a0a0a0;
-      line-height: 1.8;
-    }
-
-    /* PROJECTS */
-    #projects {}
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .project-card {
-      background: rgba(22, 22, 22, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 20px;
-      overflow: hidden;
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    .project-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 45px rgba(245, 168, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    }
-
-    .project-header {
-      padding: 2rem 2rem 1.5rem;
-      background: rgba(245, 168, 0, 0.03);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      transition: background 0.3s;
-    }
-
-    .project-card:hover .project-header {
-      background: rgba(245, 168, 0, 0.06);
-    }
-
-    .project-year {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      color: var(--gold);
-      letter-spacing: 2px;
-    }
-
-    .project-arrow {
-      color: #444;
-      font-size: 1.2rem;
-      transition: color 0.3s, transform 0.3s;
-    }
-
-    .project-card:hover .project-arrow {
-      color: var(--gold);
-      transform: translate(4px, -4px);
-    }
-
-    .project-body {
-      padding: 1.5rem 2rem 2rem;
-    }
-
-    .project-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      letter-spacing: 1px;
-      color: var(--white);
-      margin-bottom: 1rem;
-    }
-
-    .project-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .project-features li {
-      font-size: 0.85rem;
-      color: #777;
-      padding-left: 1rem;
-      position: relative;
-    }
-
-    .project-features li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--gold);
-      font-size: 0.7rem;
-    }
-
-    /* CONTACT */
-    #contact {
-      background: var(--gray);
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-    }
-
-    .contact-text p {
-      font-size: 1.05rem;
-      color: #a0a0a0;
-      line-height: 1.9;
-      margin-bottom: 2rem;
-    }
-
-    .contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      padding: 1.5rem 1.75rem;
-      background: rgba(22, 22, 22, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      text-decoration: none;
-      color: var(--white);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .contact-link:hover {
-      border-color: var(--gold);
-      background: rgba(245, 168, 0, 0.08);
-      transform: translateX(8px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(245, 168, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    }
-
-    .contact-link:hover .contact-link-icon {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 4px 15px rgba(245, 168, 0, 0.5);
-    }
-
-    .contact-link-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      border-radius: 12px;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .contact-link-label {
-      font-size: 0.7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #555;
-      margin-bottom: 0.2rem;
-    }
-
-    .contact-link-value {
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    /* Contact form */
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .form-group label {
-      font-size: 0.7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #555;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--white);
-      padding: 1rem 1.4rem;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
-      resize: none;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      border-radius: 12px;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 0.9rem;
-      transition: color 0.3s;
-    }
-
-    .form-group input:focus::placeholder,
-    .form-group textarea:focus::placeholder {
-      color: rgba(255, 255, 255, 0.2);
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: var(--gold);
-      background: rgba(255, 255, 255, 0.07);
-      box-shadow: 0 0 15px rgba(245, 168, 0, 0.25), 0 0 0 4px rgba(245, 168, 0, 0.15);
-      transform: translateY(-2px);
-    }
-
-    .form-group textarea {
-      height: 120px;
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 2rem 3rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
-      color: var(--gold);
-      letter-spacing: 2px;
-    }
-
-    .footer-credit {
-      font-size: 0.75rem;
-      color: #444;
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.97);
-        filter: blur(5px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-      }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px) scale(0.97);
-      filter: blur(5px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform, filter;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
-    }
-
-    /* MOBILE NAV */
-    @media (max-width: 768px) {
-      nav {
-        padding: 1.2rem 1.5rem;
-      }
-
-      .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        bottom: 0;
-        width: 70%;
-        background: rgba(10, 10, 10, 0.85);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        flex-direction: column;
-        justify-content: center;
-        padding: 3rem;
-        transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        border-left: 1px solid rgba(255, 255, 255, 0.08);
-        z-index: 999;
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
-      }
-
-      .nav-links.open {
-        right: 0;
-      }
-
-      .nav-links a {
-        font-size: 1.1rem;
-      }
-
-      .hamburger {
-        display: flex;
-      }
-
-      .nav-close {
-        display: block;
-      }
-
-      #home {
-        padding: 0 1.5rem;
-      }
-
-      section {
-        padding: 5rem 1.5rem;
-      }
-
-      #about {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      .about-visual {
-        display: none;
-      }
-
-      .edu-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      .about-stats {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      footer {
-        flex-direction: column;
-        gap: 0.5rem;
-        text-align: center;
-      }
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: rgba(245, 168, 0, 0.9);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: var(--black);
-      padding: 1.1rem 1.8rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      border-radius: 30px;
-      box-shadow: 0 10px 25px rgba(245, 168, 0, 0.25);
-      opacity: 0;
-      transform: translateY(20px) scale(0.95);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 9000;
-      pointer-events: none;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    /* Ticker */
-    .ticker-wrap {
-      overflow: hidden;
-      padding: 0.8rem 0;
-      background: var(--gold);
-      white-space: nowrap;
-    }
-
-    .ticker {
-      display: inline-block;
-      animation: ticker 25s linear infinite;
-    }
-
-    .ticker span {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 3px;
-      color: var(--black);
-      padding: 0 2rem;
-    }
-
-    @keyframes ticker {
-      0% {
-        transform: translateX(0);
-      }
-
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-
-    /* ===== SPOTLIGHT EASTER EGG ===== */
-    .spotlight-zone {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 35%;
-      height: 100%;
-      z-index: 2;
-      overflow: hidden;
-    }
-
-    /* ---- BUG OUTLINE HINT ---- */
-    .bug-hint-svg {
-      position: absolute;
-      top: 50%;
-      left: 42%; /* Shifted left to match real bug content */
-      transform: translate(-50%, -50%);
-      width: min(180px, 70%);
-      height: auto;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 1;
-      /* Slow fade out when spotlight is active */
-      transition: opacity 0.6s ease;
-    }
-
-    .bug-hint-svg .hint-path {
-      fill: none;
-      stroke: rgba(245, 168, 0, 0.18);
-      stroke-width: 1px;
-      stroke-dasharray: 4 5;
-      animation: hintPulse 4s ease-in-out infinite;
-    }
-
-    .bug-hint-svg .hint-path-solid {
-      fill: none;
-      stroke: rgba(245, 168, 0, 0.06);
-      stroke-width: 0.5px;
-    }
-
-    @keyframes hintPulse {
-
-      0%,
-      100% {
-        stroke-opacity: 0.18;
-      }
-
-      50% {
-        stroke-opacity: 0.32;
-      }
-    }
-
-    /* Hide hint when user is hovering the spotlight */
-    .spotlight-zone:hover .bug-hint-svg {
-      opacity: 0;
-    }
-
-    /* The hidden layer — always present but invisible */
-    .spotlight-hidden {
-      position: absolute;
-      inset: 0;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%);
-      mask-image: radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%);
-      transition: -webkit-mask-image 0.05s, mask-image 0.05s;
-    }
-
-    .spotlight-content {
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transform: translateX(-8%); /* Shifted left */
-    }
-
-    /* ---- BUG SVG EASTER EGG UPGRADES ---- */
-    .bug-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-      will-change: transform;
-    }
-
-    .bug-svg {
-      width: min(320px, 85%); /* Enlarged as requested */
-      height: auto;
-      filter: drop-shadow(0 0 24px rgba(245, 168, 0, 0.45)) drop-shadow(0 0 60px rgba(245, 168, 0, 0.15));
-      animation: bugFloat 4s ease-in-out infinite, bugPulseGlow 3s ease-in-out infinite;
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15), filter 0.4s ease;
-      transform-origin: center;
-      will-change: transform, filter;
-    }
-
-    @keyframes bugFloat {
-      0%, 100% {
-        transform: translateY(0) rotate(-1.5deg);
-      }
-      50% {
-        transform: translateY(-14px) rotate(1.5deg);
-      }
-    }
-
-    @keyframes bugPulseGlow {
-      0%, 100% {
-        filter: drop-shadow(0 0 24px rgba(245, 168, 0, 0.45)) drop-shadow(0 0 60px rgba(245, 168, 0, 0.15));
-      }
-      50% {
-        filter: drop-shadow(0 0 35px rgba(245, 168, 0, 0.75)) drop-shadow(0 0 80px rgba(245, 168, 0, 0.3));
-      }
-    }
-
-    /* Startled high-frequency micro buzzing */
-    .bug-svg.startled {
-      animation: bugFloat 4s ease-in-out infinite, bugPulseGlow 0.8s ease-in-out infinite, bugBuzz 0.12s linear infinite;
-    }
-
-    @keyframes bugBuzz {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(-1.5px, 0.5px) rotate(-0.5deg); }
-      50% { transform: translate(1px, -1px) rotate(0.5deg); }
-      75% { transform: translate(-0.5px, -1.5px) rotate(0deg); }
-    }
-
-    /* Bouncing movement on direct hover */
-    .bug-svg.bug-hovered {
-      animation: bugHoverBounce 0.6s ease-in-out infinite !important;
-      filter: drop-shadow(0 0 45px rgba(245, 168, 0, 0.95)) drop-shadow(0 0 90px rgba(245, 168, 0, 0.5)) !important;
-    }
-
-    @keyframes bugHoverBounce {
-      0%, 100% {
-        transform: translateY(0) scale(1.1);
-      }
-      50% {
-        transform: translateY(-10px) scale(1.1);
-      }
-    }
-
-    /* Micro Camera Shake for Spotlight Zone */
-    .shake-zone {
-      animation: cameraShake 0.3s cubic-bezier(.36,.07,.19,.97) both;
-    }
-
-    @keyframes cameraShake {
-      10%, 90% { transform: translate3d(-1.5px, 0.5px, 0); }
-      20%, 80% { transform: translate3d(2px, -1px, 0); }
-      30%, 50%, 70% { transform: translate3d(-3px, -0.5px, 0); }
-      40%, 60% { transform: translate3d(3px, 1px, 0); }
-    }
-
-    /* Interactive wiggling antennae animations */
-    @keyframes antennaWiggleLeft {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-20deg); }
-    }
-
-    @keyframes antennaWiggleRight {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(20deg); }
-    }
-
-    .antenna-left.frantic-wiggle {
-      animation: antennaWiggleLeft 0.12s ease-in-out infinite;
-    }
-
-    .antenna-right.frantic-wiggle {
-      animation: antennaWiggleRight 0.12s ease-in-out infinite;
-    }
-
-    .sp-tag {
-      font-size: 0.7rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-      animation: spFlicker 3s ease infinite;
-    }
-
-    @keyframes spFlicker {
-
-      0%,
-      96%,
-      100% {
-        opacity: 1;
-      }
-
-      97% {
-        opacity: 0.3;
-      }
-
-      98% {
-        opacity: 1;
-      }
-
-      99% {
-        opacity: 0.2;
-      }
-    }
-
-    .sp-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(32px, 4vw, 56px);
-      color: var(--white);
-      line-height: 1;
-      margin-bottom: 1.5rem;
-      text-shadow: 0 0 20px rgba(245, 168, 0, 0.4);
-    }
-
-    .sp-bottom {
-      font-size: 0.68rem;
-      color: #444;
-      letter-spacing: 1px;
-      margin-top: 1rem;
-    }
-
-    /* Invisible overlay to catch mouse events */
-    .spotlight-mask {
-      position: absolute;
-      inset: 0;
-      cursor: crosshair;
-      z-index: 3;
-    }
-
-    @media (max-width: 768px) {
-      .spotlight-zone {
-        display: none;
-      }
-    }
-  </style>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <body>
 
+  <!-- UI Components -->
   <div class="toast" id="toast">Message Sent!</div>
 
-  <!-- NAV -->
-  <nav id="navbar">
-    <a href="#home" class="nav-logo">Saifallah Basem</a>
-    <ul class="nav-links" id="navLinks">
-      <button class="nav-close" onclick="toggleNav()">✕</button>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <button class="hamburger" id="hamburger" onclick="toggleNav()">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+  <!-- HEADER / NAVIGATION -->
+  <header>
+    <nav id="navbar">
+      <a href="#home" class="nav-logo">Saifallah Basem</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
 
-  <!-- HERO -->
-  <section id="home">
-    <div class="hero-bg-text">TESTING</div>
-    <div class="hero-content">
-      <p class="hero-tag">Available for freelance & collaboration</p>
-      <h1 class="hero-name">SAIFALLAH<br>BASEM</h1>
-      <div class="hero-role">SW Tester</div>
-      <p class="hero-desc">I protect your software from real-world failures. Risk-based, edge-case-focused, and
-        communication-driven quality assurance.</p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">View Projects</a>
-        <a href="#contact" class="btn btn-outline">Get in Touch</a>
-        <a href="https://www.linkedin.com/in/saifallah-basem" target="_blank" class="btn-icon" title="LinkedIn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-          </svg>
-        </a>
-        <a href="https://drive.google.com/uc?export=download&id=12jmp_d-lAa_w9LPgOWkXBqH8tgZL-XWh"
-          download="Saifallah_Basem_CV.pdf" class="btn-icon" title="Download CV"
-          style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;">CV</a>
-      </div>
-    </div>
-    <div class="scroll-indicator">
-      <div class="scroll-line"></div>
-      Scroll to explore
-    </div>
-
-    <!-- SPOTLIGHT EASTER EGG -->
-    <div class="spotlight-zone" id="spotlightZone">
-
-      <!-- BUG OUTLINE HINT — faint dashed silhouette visible before hovering -->
-      <svg class="bug-hint-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <!-- Body outline -->
-        <ellipse cx="100" cy="115" rx="38" ry="52" class="hint-path" />
-        <!-- Head outline -->
-        <ellipse cx="100" cy="63" rx="28" ry="26" class="hint-path" />
-        <!-- Eye hints -->
-        <circle cx="89" cy="57" r="7" class="hint-path-solid" />
-        <circle cx="111" cy="57" r="7" class="hint-path-solid" />
-        <!-- Antennae -->
-        <line x1="90" y1="38" x2="72" y2="14" class="hint-path" stroke-dasharray="3 4" />
-        <line x1="110" y1="38" x2="128" y2="14" class="hint-path" stroke-dasharray="3 4" />
-        <circle cx="72" cy="13" r="4" class="hint-path" />
-        <circle cx="128" cy="13" r="4" class="hint-path" />
-        <!-- Legs left -->
-        <line x1="64" y1="100" x2="30" y2="88" class="hint-path" stroke-dasharray="3 4" />
-        <line x1="63" y1="115" x2="26" y2="112" class="hint-path" stroke-dasharray="3 4" />
-        <line x1="65" y1="130" x2="30" y2="138" class="hint-path" stroke-dasharray="3 4" />
-        <!-- Legs right -->
-        <line x1="136" y1="100" x2="170" y2="88" class="hint-path" stroke-dasharray="3 4" />
-        <line x1="137" y1="115" x2="174" y2="112" class="hint-path" stroke-dasharray="3 4" />
-        <line x1="135" y1="130" x2="170" y2="138" class="hint-path" stroke-dasharray="3 4" />
-      </svg>
-
-      <div class="spotlight-hidden" id="spotlightHidden">
-        <div class="spotlight-content" id="spotlightContent">
-          <div class="bug-wrapper" id="bugWrapper">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="bug-svg" id="bugSvg">
-              <!-- Soft trail shadow under bug -->
-              <ellipse cx="100" cy="180" rx="45" ry="12" fill="rgba(245, 168, 0, 0.15)" filter="blur(6px)" class="bug-shadow-trail" />
-              
-              <ellipse cx="100" cy="115" rx="38" ry="52" fill="#F5A800" />
-              <ellipse cx="100" cy="63" rx="28" ry="26" fill="#F5A800" />
-              <circle cx="89" cy="57" r="7" fill="#000" />
-              <circle cx="111" cy="57" r="7" fill="#000" />
-              
-              <!-- Active pupils for cursor tracking -->
-              <circle cx="91" cy="55" r="2.5" fill="#fff" class="pupil-left" style="transition: transform 0.1s ease-out; transform-origin: 91px 55px;" />
-              <circle cx="113" cy="55" r="2.5" fill="#fff" class="pupil-right" style="transition: transform 0.1s ease-out; transform-origin: 113px 55px;" />
-              
-              <!-- Interactive Antennae -->
-              <g class="antenna-left" style="transform-origin: 90px 38px; transition: transform 0.15s ease-in-out;">
-                <line x1="90" y1="38" x2="72" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-                <circle cx="72" cy="13" r="4" fill="#F5A800" />
-              </g>
-              <g class="antenna-right" style="transform-origin: 110px 38px; transition: transform 0.15s ease-in-out;">
-                <line x1="110" y1="38" x2="128" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-                <circle cx="128" cy="13" r="4" fill="#F5A800" />
-              </g>
-              
-              <line x1="64" y1="105" x2="136" y2="105" stroke="#cc8800" stroke-width="2" opacity="0.6" />
-              <line x1="62" y1="120" x2="138" y2="120" stroke="#cc8800" stroke-width="2" opacity="0.6" />
-              <line x1="65" y1="135" x2="135" y2="135" stroke="#cc8800" stroke-width="2" opacity="0.6" />
-              <circle cx="85" cy="112" r="6" fill="#cc8800" opacity="0.7" />
-              <circle cx="115" cy="112" r="6" fill="#cc8800" opacity="0.7" />
-              <circle cx="82" cy="130" r="5" fill="#cc8800" opacity="0.7" />
-              <circle cx="118" cy="130" r="5" fill="#cc8800" opacity="0.7" />
-              <circle cx="100" cy="95" r="5" fill="#cc8800" opacity="0.7" />
-              <line x1="64" y1="100" x2="30" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-              <line x1="63" y1="115" x2="26" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-              <line x1="65" y1="130" x2="30" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-              <line x1="136" y1="100" x2="170" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-              <line x1="137" y1="115" x2="174" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-              <line x1="135" y1="130" x2="170" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
-              <path d="M 91 70 Q 100 78 109 70" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round" />
-              <ellipse cx="78" cy="108" rx="16" ry="36" fill="rgba(255,200,50,0.12)" transform="rotate(-10,78,108)" />
-              <ellipse cx="122" cy="108" rx="16" ry="36" fill="rgba(255,200,50,0.12)" transform="rotate(10,122,108)" />
+  <main>
+    <!-- HERO SECTION -->
+    <section id="home">
+      <div class="hero-bg-text">TESTING</div>
+      <div class="hero-content">
+        <p class="hero-tag">Available for freelance & collaboration</p>
+        <h1 class="hero-name">SAIFALLAH<br>BASEM</h1>
+        <div class="hero-role">SW Tester</div>
+        <p class="hero-desc">I protect your software from real-world failures. Risk-based, edge-case-focused, and
+          communication-driven quality assurance.</p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="#contact" class="btn btn-outline">Get in Touch</a>
+          <a href="https://www.linkedin.com/in/saifallah-basem" target="_blank" class="btn-icon" title="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
             </svg>
+          </a>
+          <a href="assets/documents/Saifallah_Basem_CV.pdf"
+            download="Saifallah_Basem_CV.pdf" class="btn-icon" title="Download CV"
+            style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;">CV</a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+        Scroll to explore
+      </div>
+
+      <!-- SPOTLIGHT EASTER EGG -->
+      <div class="spotlight-zone" id="spotlightZone">
+        <!-- BUG OUTLINE HINT -->
+        <svg class="bug-hint-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="115" rx="38" ry="52" class="hint-path" />
+          <ellipse cx="100" cy="63" rx="28" ry="26" class="hint-path" />
+          <circle cx="89" cy="57" r="7" class="hint-path-solid" />
+          <circle cx="111" cy="57" r="7" class="hint-path-solid" />
+          <line x1="90" y1="38" x2="72" y2="14" class="hint-path" stroke-dasharray="3 4" />
+          <line x1="110" y1="38" x2="128" y2="14" class="hint-path" stroke-dasharray="3 4" />
+          <circle cx="72" cy="13" r="4" class="hint-path" />
+          <circle cx="128" cy="13" r="4" class="hint-path" />
+          <line x1="64" y1="100" x2="30" y2="88" class="hint-path" stroke-dasharray="3 4" />
+          <line x1="63" y1="115" x2="26" y2="112" class="hint-path" stroke-dasharray="3 4" />
+          <line x1="65" y1="130" x2="30" y2="138" class="hint-path" stroke-dasharray="3 4" />
+          <line x1="136" y1="100" x2="170" y2="88" class="hint-path" stroke-dasharray="3 4" />
+          <line x1="137" y1="115" x2="174" y2="112" class="hint-path" stroke-dasharray="3 4" />
+          <line x1="135" y1="130" x2="170" y2="138" class="hint-path" stroke-dasharray="3 4" />
+        </svg>
+
+        <div class="spotlight-hidden" id="spotlightHidden">
+          <div class="spotlight-content" id="spotlightContent">
+            <div class="bug-wrapper" id="bugWrapper">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="bug-svg" id="bugSvg">
+                <ellipse cx="100" cy="180" rx="45" ry="12" fill="rgba(245, 168, 0, 0.15)" filter="blur(6px)" class="bug-shadow-trail" />
+                <ellipse cx="100" cy="115" rx="38" ry="52" fill="#F5A800" />
+                <ellipse cx="100" cy="63" rx="28" ry="26" fill="#F5A800" />
+                <circle cx="89" cy="57" r="7" fill="#000" />
+                <circle cx="111" cy="57" r="7" fill="#000" />
+                <circle cx="91" cy="55" r="2.5" fill="#fff" class="pupil-left" />
+                <circle cx="113" cy="55" r="2.5" fill="#fff" class="pupil-right" />
+                <g class="antenna-left"><line x1="90" y1="38" x2="72" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round" /><circle cx="72" cy="13" r="4" fill="#F5A800" /></g>
+                <g class="antenna-right"><line x1="110" y1="38" x2="128" y2="14" stroke="#F5A800" stroke-width="3" stroke-linecap="round" /><circle cx="128" cy="13" r="4" fill="#F5A800" /></g>
+                <line x1="64" y1="105" x2="136" y2="105" stroke="#cc8800" stroke-width="2" opacity="0.6" />
+                <line x1="62" y1="120" x2="138" y2="120" stroke="#cc8800" stroke-width="2" opacity="0.6" />
+                <line x1="65" y1="135" x2="135" y2="135" stroke="#cc8800" stroke-width="2" opacity="0.6" />
+                <circle cx="85" cy="112" r="6" fill="#cc8800" opacity="0.7" /><circle cx="115" cy="112" r="6" fill="#cc8800" opacity="0.7" />
+                <circle cx="82" cy="130" r="5" fill="#cc8800" opacity="0.7" /><circle cx="118" cy="130" r="5" fill="#cc8800" opacity="0.7" />
+                <circle cx="100" cy="95" r="5" fill="#cc8800" opacity="0.7" />
+                <line x1="64" y1="100" x2="30" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
+                <line x1="63" y1="115" x2="26" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
+                <line x1="65" y1="130" x2="30" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
+                <line x1="136" y1="100" x2="170" y2="88" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
+                <line x1="137" y1="115" x2="174" y2="112" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
+                <line x1="135" y1="130" x2="170" y2="138" stroke="#F5A800" stroke-width="3" stroke-linecap="round" />
+                <path d="M 91 70 Q 100 78 109 70" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="sp-bottom">You found a hidden bug!</div>
           </div>
-          <div class="sp-bottom">You found a hidden bug!</div>
         </div>
+        <div class="spotlight-mask" id="spotlightMask"></div>
       </div>
-      <div class="spotlight-mask" id="spotlightMask"></div>
-    </div>
-  </section>
+    </section>
 
-  <!-- TICKER -->
-  <div class="ticker-wrap">
-    <div class="ticker">
-      <span>RISK-BASED TESTING</span><span>★</span>
-      <span>EDGE CASE IDENTIFICATION</span><span>★</span>
-      <span>EXPLORATORY TESTING</span><span>★</span>
-      <span>API TESTING</span><span>★</span>
-      <span>BUG REPORTING</span><span>★</span>
-      <span>SELENIUM & POSTMAN</span><span>★</span>
-      <span>RISK-BASED TESTING</span><span>★</span>
-      <span>EDGE CASE IDENTIFICATION</span><span>★</span>
-      <span>EXPLORATORY TESTING</span><span>★</span>
-      <span>API TESTING</span><span>★</span>
-      <span>BUG REPORTING</span><span>★</span>
-      <span>SELENIUM & POSTMAN</span><span>★</span>
-    </div>
-  </div>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-text reveal">
-      <p class="section-label">About Me</p>
-      <h2 class="section-title">QUALITY<br>MINDSET</h2>
-      <p>I'm a software tester focused on delivering <strong>reliable, user-ready software</strong>. I don't just check
-        if features work — I challenge them to understand how they fail under real-world conditions.</p>
-      <p>My approach centers on hunting <strong>edge cases</strong> and identifying high-risk defects that could impact
-        users, business flow, or trust in the product — prioritizing by risk and impact, not checklists.</p>
-      <p>Great testing is about <strong>communication as much as execution</strong>. I translate technical issues into
-        clear, actionable insights so stakeholders can make confident decisions.</p>
-      <div class="about-stats">
-
-        <!-- Projects Completed → #projects -->
-        <a href="#projects" class="stat" title="See my projects">
-          <div class="stat-num">3+</div>
-          <div class="stat-label">Projects Completed</div>
-          <div class="stat-arrow">↗</div>
-        </a>
-
-        <!-- Testing Skills → #skills -->
-        <a href="#skills" class="stat" title="See all skills">
-          <div class="stat-num">13</div>
-          <div class="stat-label">Testing Skills</div>
-          <div class="stat-arrow">↗</div>
-        </a>
-
-        <!-- Services Offered → #services -->
-        <a href="#services" class="stat" title="See all services">
-          <div class="stat-num">5</div>
-          <div class="stat-label">Services Offered</div>
-          <div class="stat-arrow">↗</div>
-        </a>
-
-        <!-- Production Surprises — easter egg tooltip -->
-        <div class="stat stat-surprise">
-          <div class="stat-num">0</div>
-          <div class="stat-label">Production Surprises</div>
-          <div class="stat-tooltip">That's the whole point 😉</div>
-        </div>
-
+    <!-- TICKER BAR -->
+    <div class="ticker-wrap">
+      <div class="ticker">
+        <span>RISK-BASED TESTING</span><span>★</span>
+        <span>EDGE CASE IDENTIFICATION</span><span>★</span>
+        <span>EXPLORATORY TESTING</span><span>★</span>
+        <span>API TESTING</span><span>★</span>
+        <span>BUG REPORTING</span><span>★</span>
+        <span>SELENIUM & POSTMAN</span><span>★</span>
+        <span>RISK-BASED TESTING</span><span>★</span>
+        <span>EDGE CASE IDENTIFICATION</span><span>★</span>
+        <span>EXPLORATORY TESTING</span><span>★</span>
+        <span>API TESTING</span><span>★</span>
+        <span>BUG REPORTING</span><span>★</span>
+        <span>SELENIUM & POSTMAN</span><span>★</span>
       </div>
     </div>
-    <div class="about-visual reveal">
-      <div class="about-card">
-        <div class="about-card-title">My Testing Philosophy</div>
-        <ul>
-          <li>Risk-first prioritization</li>
-          <li>Hunt edge cases relentlessly</li>
-          <li>Communicate impact clearly</li>
-          <li>Protect the end user</li>
-          <li>Test early in the SDLC</li>
-          <li>Challenge every requirement</li>
-        </ul>
-      </div>
-    </div>
-  </section>
 
-  <!-- EDUCATION -->
-  <section id="education">
-    <div class="reveal">
-      <p class="section-label">Background</p>
-      <h2 class="section-title">EDUCATION</h2>
-    </div>
-    <div class="edu-grid reveal">
-      <div class="edu-card">
-        <div class="edu-year">2023 — 2027</div>
-        <div class="edu-institution">Ain Shams University</div>
-        <div class="edu-degree">Faculty of Engineering — Computer & Systems Engineering</div>
-      </div>
-      <div class="edu-card">
-        <div class="edu-year">2025 — 2026</div>
-        <div class="edu-institution">DEPI</div>
-        <div class="edu-degree">Software Testing Engineer</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="reveal">
-      <p class="section-label">Expertise</p>
-      <h2 class="section-title">SKILLS</h2>
-    </div>
-    <div class="skills-grid reveal">
-      <div class="skill-tag"><span class="skill-dot"></span>Risk-Based Testing</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Impact Analysis for Defects</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Edge Case Identification</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Exploratory Testing Techniques</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Requirements Challenge & Validation</div>
-      <div class="skill-tag"><span class="skill-dot"></span>User Journey & Workflow Testing</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Failure Scenarios Analysis</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Defect Severity vs Business Priority</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Early Testing in SDLC</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Acceptance Criteria Validation</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Negative Testing Strategies</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Test Coverage Optimization</div>
-      <div class="skill-tag"><span class="skill-dot"></span>Bug Reporting for Non-Technical Stakeholders</div>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section id="services">
-    <div class="reveal">
-      <p class="section-label">What I Offer</p>
-      <h2 class="section-title">SERVICES</h2>
-    </div>
-    <div class="services-grid reveal">
-      <div class="service-card">
-        <span class="service-icon">🔍</span>
-        <div class="service-title">Manual Testing</div>
-        <div class="service-desc">Functional, regression, and exploratory testing to ensure apps work correctly under
-          real-world conditions.</div>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">⚙️</span>
-        <div class="service-title">Automated Testing</div>
-        <div class="service-desc">Creating automated test scripts using tools like Selenium or Postman to accelerate
-          test cycles.</div>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">🌐</span>
-        <div class="service-title">API Testing</div>
-        <div class="service-desc">Validating APIs for correct responses, data integrity, and performance using
-          industry-standard tooling.</div>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">📋</span>
-        <div class="service-title">Bug Reporting & Docs</div>
-        <div class="service-desc">Writing clear, actionable bug reports and maintaining comprehensive test cases and
-          plans.</div>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">🗄️</span>
-        <div class="service-title">Database Testing</div>
-        <div class="service-desc">Validating data integrity, accuracy, and consistency across databases — including CRUD
-          operations, schema validation, and query testing.</div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="reveal">
-      <p class="section-label">Work</p>
-      <h2 class="section-title">PROJECTS</h2>
-    </div>
-    <div class="projects-grid reveal">
-
-      <!-- Project 1: Traffic Light (no link) -->
-      <div class="project-card">
-        <div class="project-header">
-          <div class="project-year">2024</div>
-          <div class="project-arrow">↗</div>
-        </div>
-        <div class="project-body">
-          <div class="project-title">Traffic Light Controller</div>
-          <ul class="project-features">
-            <li>Designed and implemented a traffic light control system using digital logic circuits</li>
-            <li>Managed signal timing and sequencing efficiently</li>
-            <li>Optimized traffic flow through logic design</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Project 2: Vehicle Rental (links to GitHub) -->
-      <a class="project-card" href="https://github.com/Saifallah-star/java-project" target="_blank"
-        rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit;">
-        <div class="project-header">
-          <div class="project-year">2025</div>
-          <div class="project-arrow">↗</div>
-        </div>
-        <div class="project-body">
-          <div class="project-title">Vehicle Rental System</div>
-          <ul class="project-features">
-            <li>Designed and implemented a vehicle rental management application</li>
-            <li>Vehicle availability tracking, user bookings, and rental management</li>
-            <li>Enhanced skills in system design and software structure</li>
-          </ul>
-        </div>
-      </a>
-
-      <!-- Project 3: Food Rescue (no link) -->
-      <div class="project-card">
-        <div class="project-header">
-          <div class="project-year">2025</div>
-          <div class="project-arrow">↗</div>
-        </div>
-        <div class="project-body">
-          <div class="project-title">Food Rescue Platform</div>
-          <ul class="project-features">
-            <li>Platform connecting food donors with charities to reduce waste</li>
-            <li>Focused on system functionality, user roles, and workflow design</li>
-            <li>Applied OOP principles and problem-solving skills</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="reveal">
-      <p class="section-label">Reach Out</p>
-      <h2 class="section-title">GET IN<br>TOUCH</h2>
-    </div>
-    <div class="contact-grid reveal">
-      <div>
-        <div class="contact-text">
-          <p>Have a project that needs solid QA? Let's talk about how I can help protect your software and deliver
-            quality your users will trust.</p>
-        </div>
-        <div class="contact-links">
-          <a href="#" onclick="window.location='mai'+'lto:'+'saifallahbasem2'+'@'+'gmail.com'" class="contact-link">
-            <div class="contact-link-icon">✉</div>
-            <div>
-              <div class="contact-link-label">Email</div>
-              <div class="contact-link-value" id="emailDisplay">saifallahbasem2 [at] gmail.com</div>
-            </div>
+    <!-- ABOUT SECTION -->
+    <section id="about">
+      <div class="about-text reveal">
+        <p class="section-label">About Me</p>
+        <h2 class="section-title">QUALITY<br>MINDSET</h2>
+        <p>I'm a software tester focused on delivering <strong>reliable, user-ready software</strong>. I don't just check
+          if features work — I challenge them to understand how they fail under real-world conditions.</p>
+        <p>My approach centers on hunting <strong>edge cases</strong> and identifying high-risk defects that could impact
+          users, business flow, or trust in the product — prioritizing by risk and impact, not checklists.</p>
+        <p>Great testing is about <strong>communication as much as execution</strong>. I translate technical issues into
+          clear, actionable insights so stakeholders can make confident decisions.</p>
+        
+        <div class="about-stats">
+          <a href="#projects" class="stat" title="See my projects">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">Projects Completed</div>
+            <div class="stat-arrow">↗</div>
           </a>
-          <a href="tel:01020458519" class="contact-link">
-            <div class="contact-link-icon">📞</div>
-            <div>
-              <div class="contact-link-label">Phone</div>
-              <div class="contact-link-value">01020458519</div>
-            </div>
+
+          <a href="#skills" class="stat" title="See all skills">
+            <div class="stat-num">13</div>
+            <div class="stat-label">Testing Skills</div>
+            <div class="stat-arrow">↗</div>
           </a>
+
+          <a href="#services" class="stat" title="See all services">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Services Offered</div>
+            <div class="stat-arrow">↗</div>
+          </a>
+
+          <div class="stat stat-surprise">
+            <div class="stat-num">0</div>
+            <div class="stat-label">Production Surprises</div>
+            <div class="stat-tooltip">That's the whole point 😉</div>
+          </div>
         </div>
       </div>
-      <div class="contact-form" id="contactForm">
-        <div class="form-group">
-          <label>Your Name</label>
-          <input type="text" id="formName" placeholder="John Doe">
+
+      <div class="about-visual reveal">
+        <div class="about-card">
+          <div class="about-card-title">My Testing Philosophy</div>
+          <ul>
+            <li>Risk-first prioritization</li>
+            <li>Hunt edge cases relentlessly</li>
+            <li>Communicate impact clearly</li>
+            <li>Protect the end user</li>
+            <li>Test early in the SDLC</li>
+            <li>Challenge every requirement</li>
+          </ul>
         </div>
-        <div class="form-group">
-          <label>Your Email</label>
-          <input type="email" id="formEmail" placeholder="john@example.com">
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea id="formMessage" placeholder="Tell me about your project..."></textarea>
-        </div>
-        <button class="btn btn-primary" id="sendBtn" onclick="sendMessage()">Send Message →</button>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- EDUCATION SECTION -->
+    <section id="education">
+      <div class="reveal">
+        <p class="section-label">Background</p>
+        <h2 class="section-title">EDUCATION</h2>
+      </div>
+      <div class="edu-grid reveal">
+        <div class="edu-card card-base">
+          <div class="edu-year">2023 — 2027</div>
+          <div class="edu-institution">Ain Shams University</div>
+          <p class="edu-degree">Faculty of Engineering — Computer & Systems Engineering</p>
+        </div>
+        <div class="edu-card card-base">
+          <div class="edu-year">2025 — 2026</div>
+          <div class="edu-institution">DEPI</div>
+          <p class="edu-degree">Software Testing Engineer</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills">
+      <div class="reveal">
+        <p class="section-label">Expertise</p>
+        <h2 class="section-title">SKILLS</h2>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-tag"><span class="skill-dot"></span>Risk-Based Testing</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Impact Analysis for Defects</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Edge Case Identification</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Exploratory Testing Techniques</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Requirements Challenge & Validation</div>
+        <div class="skill-tag"><span class="skill-dot"></span>User Journey & Workflow Testing</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Failure Scenarios Analysis</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Defect Severity vs Business Priority</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Early Testing in SDLC</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Acceptance Criteria Validation</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Negative Testing Strategies</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Test Coverage Optimization</div>
+        <div class="skill-tag"><span class="skill-dot"></span>Bug Reporting for Non-Technical Stakeholders</div>
+      </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services">
+      <div class="reveal">
+        <p class="section-label">What I Offer</p>
+        <h2 class="section-title">SERVICES</h2>
+      </div>
+      <div class="services-grid reveal">
+        <div class="service-card card-base">
+          <span class="service-icon">🔍</span>
+          <div class="service-title">Manual Testing</div>
+          <p class="service-desc">Functional, regression, and exploratory testing to ensure apps work correctly under real-world conditions.</p>
+        </div>
+        <div class="service-card card-base">
+          <span class="service-icon">⚙️</span>
+          <div class="service-title">Automated Testing</div>
+          <p class="service-desc">Creating automated test scripts using tools like Selenium or Postman to accelerate test cycles.</p>
+        </div>
+        <div class="service-card card-base">
+          <span class="service-icon">🌐</span>
+          <div class="service-title">API Testing</div>
+          <p class="service-desc">Validating APIs for correct responses, data integrity, and performance using industry-standard tooling.</p>
+        </div>
+        <div class="service-card card-base">
+          <span class="service-icon">📋</span>
+          <div class="service-title">Bug Reporting & Docs</div>
+          <p class="service-desc">Writing clear, actionable bug reports and maintaining comprehensive test cases and plans.</p>
+        </div>
+        <div class="service-card card-base">
+          <span class="service-icon">🗄️</span>
+          <div class="service-title">Database Testing</div>
+          <p class="service-desc">Validating data integrity, accuracy, and consistency across databases — including CRUD operations and query testing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section id="projects">
+      <div class="reveal">
+        <p class="section-label">Work</p>
+        <h2 class="section-title">PROJECTS</h2>
+      </div>
+      <div class="projects-grid reveal">
+        <article class="project-card">
+          <div class="project-header">
+            <div class="project-year">2024</div>
+            <div class="project-arrow">↗</div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Traffic Light Controller</h3>
+            <ul class="project-features">
+              <li>Designed and implemented a traffic light control system using digital logic circuits</li>
+              <li>Managed signal timing and sequencing efficiently</li>
+              <li>Optimized traffic flow through logic design</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <a href="https://github.com/Saifallah-star/java-project" target="_blank" rel="noopener noreferrer" class="project-link-overlay" aria-label="View Vehicle Rental System on GitHub"></a>
+          <div class="project-header">
+            <div class="project-year">2025</div>
+            <div class="project-arrow">↗</div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Vehicle Rental System</h3>
+            <ul class="project-features">
+              <li>Designed and implemented a vehicle rental management application</li>
+              <li>Vehicle availability tracking, user bookings, and rental management</li>
+              <li>Enhanced skills in system design and software structure</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-header">
+            <div class="project-year">2025</div>
+            <div class="project-arrow">↗</div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Food Rescue Platform</h3>
+            <ul class="project-features">
+              <li>Platform connecting food donors with charities to reduce waste</li>
+              <li>Focused on system functionality, user roles, and workflow design</li>
+              <li>Applied OOP principles and problem-solving skills</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+      <div class="reveal">
+        <p class="section-label">Reach Out</p>
+        <h2 class="section-title">GET IN<br>TOUCH</h2>
+      </div>
+      <div class="contact-grid reveal">
+        <div class="contact-info">
+          <p class="contact-desc">Have a project that needs solid QA? Let's talk about how I can help protect your software and deliver quality your users will trust.</p>
+          <div class="contact-links">
+            <a href="mailto:saifallahbasem2@gmail.com" class="contact-link">
+              <div class="contact-link-icon">✉</div>
+              <div>
+                <div class="contact-link-label">Email</div>
+                <div class="contact-link-value" id="emailDisplay">saifallahbasem2 [at] gmail.com</div>
+              </div>
+            </a>
+            <a href="tel:01020458519" class="contact-link">
+              <div class="contact-link-icon">📞</div>
+              <div>
+                <div class="contact-link-label">Phone</div>
+                <div class="contact-link-value">01020458519</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label for="formName">Your Name</label>
+            <input type="text" id="formName" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="formEmail">Your Email</label>
+            <input type="email" id="formEmail" placeholder="john@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="formMessage">Message</label>
+            <textarea id="formMessage" placeholder="Tell me about your project..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="sendBtn">Send Message →</button>
+        </form>
+      </div>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-name">Saifallah Basem</div>
-    <div class="footer-credit">SW Tester · Ain Shams University · Cairo, Egypt</div>
+    <p class="footer-credit">SW Tester · Ain Shams University · Cairo, Egypt</p>
   </footer>
 
-  <script>
-    // Show real email
-    document.getElementById('emailDisplay').textContent = 'saifallahbasem2' + '@' + 'gmail.com';
-
-    // EmailJS init
-    emailjs.init('9bUeWzRMy6z7zcwt0');
-
-    // Spotlight easter egg
-    const spotlightZone = document.getElementById('spotlightZone');
-    const spotlightHidden = document.getElementById('spotlightHidden');
-    const spotlightMask = document.getElementById('spotlightMask');
-    const bugWrapper = document.getElementById('bugWrapper');
-    const bugSvg = document.getElementById('bugSvg');
-    const spotlightContent = document.getElementById('spotlightContent');
-
-    if (spotlightZone && spotlightMask && bugWrapper && bugSvg && spotlightContent) {
-      let startled = false;
-      let calmTimeout = null;
-
-      spotlightMask.addEventListener('mousemove', (e) => {
-        const rect = spotlightZone.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const radius = 210; // Expanded to reveal the larger bug beautifully
-        spotlightHidden.style.webkitMaskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
-        spotlightHidden.style.maskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
-
-        // Interactive bug tracking
-        const bugRect = bugSvg.getBoundingClientRect();
-        const bugCenterX = bugRect.left + bugRect.width / 2;
-        const bugCenterY = bugRect.top + bugRect.height / 2;
-
-        const xDiff = e.clientX - bugCenterX;
-        const yDiff = e.clientY - bugCenterY;
-        const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-
-        // 1. Tiny eye movement following the cursor direction
-        const angle = Math.atan2(yDiff, xDiff);
-        const maxEyeOffset = 4.5; // Slightly wider eye tracking range
-        const eyeDx = Math.cos(angle) * maxEyeOffset;
-        const eyeDy = Math.sin(angle) * maxEyeOffset;
-        
-        const pupilLeft = bugSvg.querySelector('.pupil-left');
-        const pupilRight = bugSvg.querySelector('.pupil-right');
-        if (pupilLeft && pupilRight) {
-          pupilLeft.style.transform = `translate(${eyeDx}px, ${eyeDy}px)`;
-          pupilRight.style.transform = `translate(${eyeDx}px, ${eyeDy}px)`;
-        }
-
-        // 2. State Machine behavior based on distance (Proportional to the new size)
-        if (distance < 220) {
-          // Cursor is close -> Scared reaction
-          if (!startled) {
-            startled = true;
-            bugSvg.classList.add('startled');
-            
-            // Micro camera shake/vibration
-            spotlightContent.classList.add('shake-zone');
-            setTimeout(() => {
-              spotlightContent.classList.remove('shake-zone');
-            }, 300);
-
-            // Wiggle antennae
-            const antennaL = bugSvg.querySelector('.antenna-left');
-            const antennaR = bugSvg.querySelector('.antenna-right');
-            if (antennaL && antennaR) {
-              antennaL.classList.add('frantic-wiggle');
-              antennaR.classList.add('frantic-wiggle');
-            }
-          }
-
-          // Repel translation away from cursor (moves backward)
-          const repelForce = Math.max(0, (220 - distance) * 0.4); // stronger repel when closer
-          const rx = -Math.cos(angle) * repelForce;
-          const ry = -Math.sin(angle) * repelForce;
-
-          // Rotate slightly left/right based on approach vector
-          const maxRotate = 14;
-          const rotVal = (xDiff > 0 ? -1 : 1) * maxRotate * (1 - distance / 220);
-
-          // Apply transforms
-          bugWrapper.style.transform = `translate(${rx}px, ${ry}px)`;
-          bugSvg.style.transform = `rotate(${rotVal}deg) scale(1.05)`;
-
-          // Direct hover reaction (closer than 80px)
-          if (distance < 80) {
-            bugSvg.classList.add('bug-hovered');
-          } else {
-            bugSvg.classList.remove('bug-hovered');
-          }
-
-          // Clear calm down timer
-          clearTimeout(calmTimeout);
-          calmTimeout = setTimeout(() => {
-            calmDownBug();
-          }, 1200);
-        } else {
-          // Cursor leaves zone -> return smoothly to calm floating state
-          if (startled && distance > 260) {
-            calmDownBug();
-          }
-        }
-      });
-
-      spotlightMask.addEventListener('mouseleave', () => {
-        spotlightHidden.style.webkitMaskImage = `radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%)`;
-        spotlightHidden.style.maskImage = `radial-gradient(circle 0px at -999px -999px, black 100%, transparent 100%)`;
-        
-        // Quick calm down and return to center
-        calmDownBug();
-        
-        // Reset eye highlights
-        const pupilLeft = bugSvg.querySelector('.pupil-left');
-        const pupilRight = bugSvg.querySelector('.pupil-right');
-        if (pupilLeft && pupilRight) {
-          pupilLeft.style.transform = '';
-          pupilRight.style.transform = '';
-        }
-      });
-
-      function calmDownBug() {
-        if (!startled) return;
-        startled = false;
-        bugSvg.classList.remove('startled');
-        bugSvg.classList.remove('bug-hovered');
-        
-        const antennaL = bugSvg.querySelector('.antenna-left');
-        const antennaR = bugSvg.querySelector('.antenna-right');
-        if (antennaL && antennaR) {
-          antennaL.classList.remove('frantic-wiggle');
-          antennaR.classList.remove('frantic-wiggle');
-        }
-
-        bugWrapper.style.transform = '';
-        bugSvg.style.transform = '';
-      }
-    }
-
-    // Navbar scroll
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    // Mobile nav
-    function toggleNav() {
-      document.getElementById('hamburger').classList.toggle('open');
-      document.getElementById('navLinks').classList.toggle('open');
-    }
-    document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => {
-      document.getElementById('hamburger').classList.remove('open');
-      document.getElementById('navLinks').classList.remove('open');
-    }));
-
-    // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.05 });
-    reveals.forEach(r => observer.observe(r));
-    setTimeout(() => { reveals.forEach(r => r.classList.add('visible')); }, 2000);
-
-    // Active nav highlight
-    window.addEventListener('scroll', () => {
-      let current = '';
-      document.querySelectorAll('section').forEach(s => {
-        if (window.scrollY >= s.offsetTop - 100) current = s.id;
-      });
-      document.querySelectorAll('#navLinks a').forEach(a => {
-        const isActive = a.getAttribute('href') === '#' + current;
-        a.classList.toggle('active', isActive);
-        a.style.color = '';
-      });
-    });
-
-    // Typing effect for hero tag
-    const heroTag = document.querySelector('.hero-tag');
-    if (heroTag) {
-      const text = heroTag.textContent;
-      heroTag.textContent = '';
-      // Remove fadeUp animation for this specific element to use typing instead
-      heroTag.style.animation = 'none';
-      heroTag.style.opacity = '1';
-
-      let i = 0;
-      setTimeout(() => {
-        const typeInterval = setInterval(() => {
-          if (i < text.length) {
-            heroTag.textContent += text.charAt(i);
-            i++;
-          } else {
-            clearInterval(typeInterval);
-          }
-        }, 40);
-      }, 500);
-    }
-
-    // Contact form with EmailJS
-    function sendMessage() {
-      const name = document.getElementById('formName').value.trim();
-      const email = document.getElementById('formEmail').value.trim();
-      const msg = document.getElementById('formMessage').value.trim();
-      if (!name || !email || !msg) { alert('Please fill in all fields.'); return; }
-
-      const btn = document.getElementById('sendBtn');
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-
-      emailjs.send('service_ym3834h', 'template_2o8v2dd', {
-        from_name: name,
-        from_email: email,
-        message: msg
-      }).then(() => {
-        const toast = document.getElementById('toast');
-        toast.textContent = `Thanks ${name}! Message received ✓`;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-        document.getElementById('formName').value = '';
-        document.getElementById('formEmail').value = '';
-        document.getElementById('formMessage').value = '';
-        btn.textContent = 'Send Message →';
-        btn.disabled = false;
-      }).catch(() => {
-        alert('Failed to send. Please try again or email directly.');
-        btn.textContent = 'Send Message →';
-        btn.disabled = false;
-      });
-    }
-  </script>
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/interactions.js"></script>
 </body>
 
 </html>

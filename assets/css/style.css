@@ -14,8 +14,8 @@
 
 :root {
   --gold: #F5A800;
-  --gold-glow: rgba(245, 168, 0, 0.4);
-  --gold-soft: rgba(245, 168, 0, 0.08);
+  --gold-glow: rgba(0, 0, 0, 0.4);
+  --gold-soft: rgb(0, 0, 0);
   --black: #000000;
   --white: #FFFFFF;
   --gray: #111111;
@@ -60,7 +60,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffbb20;
+  background: #ffb509;
 }
 
 ::selection {
@@ -81,7 +81,8 @@ body {
 /* mesh-bg orbs removed to eliminate orange/yellow background light.
    The particle canvas provides all the depth needed. */
 .mesh-bg {
-  display: none; /* Hidden — background is pure #000 via body */
+  display: none;
+  /* Hidden — background is pure #000 via body */
 }
 
 /* ---- Particle Canvas ---- */

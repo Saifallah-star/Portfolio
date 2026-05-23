@@ -77,69 +77,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ---- Animated Mesh Gradient Background ---- */
+/* ---- Background — pure black, no ambient glow ---- */
+/* mesh-bg orbs removed to eliminate orange/yellow background light.
+   The particle canvas provides all the depth needed. */
 .mesh-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.mesh-bg .orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.15;
-  animation: orbFloat 20s ease-in-out infinite;
-}
-
-.mesh-bg .orb-1 {
-  width: 600px;
-  height: 600px;
-  background: var(--gold);
-  top: -10%;
-  left: -10%;
-  animation-delay: 0s;
-}
-
-.mesh-bg .orb-2 {
-  width: 500px;
-  height: 500px;
-  background: #ff6b00;
-  bottom: -10%;
-  right: -10%;
-  animation-delay: -7s;
-  animation-duration: 25s;
-}
-
-.mesh-bg .orb-3 {
-  width: 400px;
-  height: 400px;
-  background: var(--gold);
-  top: 40%;
-  left: 60%;
-  animation-delay: -14s;
-  animation-duration: 22s;
-}
-
-@keyframes orbFloat {
-
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  33% {
-    transform: translate(30px, -30px) scale(1.1);
-  }
-
-  66% {
-    transform: translate(-20px, 20px) scale(0.95);
-  }
+  display: none; /* Hidden — background is pure #000 via body */
 }
 
 /* ---- Particle Canvas ---- */
@@ -407,7 +349,7 @@ nav.scrolled {
   color: var(--white);
   opacity: 0;
   animation: fadeUp 0.8s 0.4s forwards;
-  text-shadow: 0 0 60px rgba(245, 168, 0, 0.1);
+  /* Removed large text-shadow blur — reduces repaint cost */
 }
 
 .hero-role {
@@ -1489,14 +1431,15 @@ footer {
   will-change: transform;
 }
 
+/* Bug SVG — single drop-shadow for performance (two layers caused expensive repaints) */
 .bug-svg {
   width: min(320px, 85%);
   height: auto;
-  filter: drop-shadow(0 0 24px rgba(245, 168, 0, 0.45)) drop-shadow(0 0 60px rgba(245, 168, 0, 0.15));
+  filter: drop-shadow(0 0 20px rgba(245, 168, 0, 0.5));
   animation: bugFloat 4s ease-in-out infinite, bugPulseGlow 3s ease-in-out infinite;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15), filter 0.4s ease;
   transform-origin: center;
-  will-change: transform, filter;
+  will-change: transform;
 }
 
 @keyframes bugFloat {
@@ -1507,25 +1450,26 @@ footer {
   }
 
   50% {
-    transform: translateY(-14px) rotate(1.5deg);
+    transform: translateY(-12px) rotate(1.5deg);
   }
 }
 
+/* Single-layer glow pulse — significantly cheaper than two drop-shadows */
 @keyframes bugPulseGlow {
 
   0%,
   100% {
-    filter: drop-shadow(0 0 24px rgba(245, 168, 0, 0.45)) drop-shadow(0 0 60px rgba(245, 168, 0, 0.15));
+    filter: drop-shadow(0 0 18px rgba(245, 168, 0, 0.4));
   }
 
   50% {
-    filter: drop-shadow(0 0 35px rgba(245, 168, 0, 0.75)) drop-shadow(0 0 80px rgba(245, 168, 0, 0.3));
+    filter: drop-shadow(0 0 32px rgba(245, 168, 0, 0.75));
   }
 }
 
-/* Startled bug */
+/* Startled bug — buzz replaces float to reduce simultaneous animation layers */
 .bug-svg.startled {
-  animation: bugFloat 4s ease-in-out infinite, bugPulseGlow 0.8s ease-in-out infinite, bugBuzz 0.12s linear infinite;
+  animation: bugPulseGlow 0.8s ease-in-out infinite, bugBuzz 0.12s linear infinite;
 }
 
 @keyframes bugBuzz {
@@ -1548,10 +1492,10 @@ footer {
   }
 }
 
-/* Bug hover bounce */
+/* Bug hover bounce — reduced to single glow for performance */
 .bug-svg.bug-hovered {
   animation: bugHoverBounce 0.6s ease-in-out infinite !important;
-  filter: drop-shadow(0 0 45px rgba(245, 168, 0, 0.95)) drop-shadow(0 0 90px rgba(245, 168, 0, 0.5)) !important;
+  filter: drop-shadow(0 0 40px rgba(245, 168, 0, 0.9)) !important;
 }
 
 @keyframes bugHoverBounce {
@@ -1674,6 +1618,29 @@ footer {
   margin-top: 1rem;
 }
 
+/* ---- Hidden Bug Challenge Hint ---- */
+/* Subtle text placed below the hero scroll indicator, visible to curious visitors */
+.bug-challenge-hint {
+  position: absolute;
+  bottom: 2rem;
+  right: 3rem;
+  font-size: 0.6rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(245, 168, 0, 0.28);
+  user-select: none;
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.8s forwards;
+  transition: color 0.4s ease, opacity 0.4s ease;
+  z-index: 1;
+}
+
+/* On hero hover, very slightly brighten the hint — still subtle */
+#home:hover .bug-challenge-hint {
+  color: rgba(245, 168, 0, 0.42);
+}
+
 /* Spotlight mask overlay */
 .spotlight-mask {
   position: absolute;
@@ -1715,35 +1682,31 @@ footer {
 /* ==========================================
    ANIMATIONS
    ========================================== */
+/* Fade-up entrance — no blur filter (cheaper, avoids layer promotion thrash) */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.97);
-    filter: blur(5px);
+    transform: translateY(24px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
+    transform: translateY(0);
   }
 }
 
-/* Scroll Reveal */
+/* Scroll Reveal — drop blur to keep compositing lightweight */
 .reveal {
   opacity: 0;
-  transform: translateY(30px) scale(0.97);
-  filter: blur(5px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
+  transform: translateY(0);
 }
 
 /* Staggered children animation */
